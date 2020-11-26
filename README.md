@@ -10,4 +10,4 @@ A semi-supervised framework to visually assess the progression of time series. I
 - utils.py: helper functions.
 - data folder: data to validate the model performance.
 - logs folder: training logs record.
-- model: saved models applied to FA data to compare the implemented solution with other state-of-the-art classifiers for time series.
+- model: saved models applied to the AF dataset to compare the implemented solution with other state-of-the-art classifiers for time series.
