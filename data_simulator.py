@@ -38,7 +38,7 @@ def split(samples, proportions):
 
 	return train, vali, test
 
-def generate_dataset():
+def AF_dataset():
 	"""
 	Build dataset from each class
 	"""
@@ -205,6 +205,45 @@ def markov_samples(num_examples, betaNA, alpha):
 	samples = samples.reshape(samples.shape[0],samples.shape[1],1)
 	return samples
 
+# Labels: F1A0.5,F2A0.5,F3A0.5,F4A0.5,F3A0.125,F3A0.25,F3A0.375,F3A0.5
+def sine_wave(seq_length=144, num_samples=28*5*100, num_signals=1):
+  frequency = np.array([1,2,3,4,3,3])
+  amplitude = np.array([0.5,0.5,0.5,0.375,0.25,0.125])
+  num_classes = len(frequency)
+  ix = np.arange(seq_length) + 1
+  samples = []
+  labels = []
+  for i in range(num_classes):
+    for j in range(int(num_samples/num_classes)):
+      signals = []
+      f = frequency[i]     # frequency
+      A = amplitude[i]       # amplitude
+      # offset
+      offset = np.random.uniform(low=-np.pi, high=np.pi)
+      signals.append(A*np.sin(2*np.pi*f*ix/float(seq_length) + offset) + 0.5)
+      samples.append(np.array(signals).T)
+  # the shape of the samples is num_samples x seq_length x num_signals
+  samples = np.array(samples)
+
+  # target data
+  n_classes = 6
+  args = (0*np.ones(int(len(data)/n_classes)), 1*np.ones(int(len(data)/n_classes)), 2*np.ones(int(len(data)/n_classes)), 3*np.ones(int(len(data)/n_classes)), 4*np.ones(int(len(data)/n_classes)), 5*np.ones(int(len(data)/n_classes)))
+  target = np.concatenate(args)
+  
+  # shuffle the data
+  randomize = np.arange(len(target))
+  np.random.shuffle(randomize)
+  target = target[randomize]
+  data = data[randomize]
+
+  # Split in train/test input/target
+  input_train, input_vali, input_test = split(data, [0.6, 0.2, 0.2])
+  target_train, target_vali, target_test = split(target, [0.6, 0.2, 0.2])
+
+  # Save the generated data
+  dict_data = {'input_train': input_train, 'input_vali': input_vali, 'input_test': input_test, 'target_train': target_train, 'target_vali': target_vali, 'target_test': target_test}
+  np.save('./sine_wave.npy', dict_data)
+
 # this may take a while, consider parallelization
 data_classes = [(10, 0.998), (30, 0.998), (180, 0.998), (10, 0.999), (30, 0.999), (180, 0.999)]
 for c in data_classes:
@@ -213,4 +252,5 @@ for c in data_classes:
 	np.save(data_path, samples)
 	print('Saved training data to', data_path)
 
-generate_dataset()
+AF_dataset()
+sine_wave()
