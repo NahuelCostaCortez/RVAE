@@ -72,7 +72,7 @@ def create_model(input_dim, timesteps, intermediate_dim, batch_size, latent_dim,
 	# -------------------------------------------------------
 	
 	# instantiate the VAE model:
-	outputs = [decoder(encoder(inputs)), clf_supervised(encoder(inputs))]
+	outputs = [decoder(encoder(inputs)[2]), clf_supervised(encoder(inputs)[2])]
 	vae = Model(inputs, outputs, name='vae_mlp')
 	print(vae.summary())
 
