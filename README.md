@@ -1,6 +1,8 @@
 # RVAE
 A semi-supervised framework to visually assess the progression of time series. In this repository a recurrent version of the VAE is implemented to exploit the generative properties that lead it to learn in an unsupervised way a continuous compressed representation of the data. A classifier is introduced in the VAE training process to control the regulation of the latent space, allowing the network to learn latent variables that set the basis for creating an explainable evaluation of the data. 
 
+[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NahuelCostaCortez/RVAE/blob/main/FA-RVAE.ipynb)
+
 # Files in this Repository
 
 - FA-RVAE.ipynb: Jupyter notebook with the model implementation and results of a case study.
